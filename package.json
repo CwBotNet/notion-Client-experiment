@@ -2,6 +2,9 @@
   "name": "notion-cms-expirement",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun run --watch ./src/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -10,6 +13,7 @@
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
+    "dotenv": "^16.4.5",
     "hono": "^4.4.3"
   }
 }

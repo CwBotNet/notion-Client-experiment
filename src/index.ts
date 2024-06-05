@@ -1,31 +1,38 @@
-import { Client } from "@notionhq/client";
+import { Hono } from "hono";
+import {
+  getEducationHandler,
+  getPageHandler,
+  getUserData,
+  getUserHandler,
+  postContactHandler,
+} from "./handlers";
+import * as dotenv from "dotenv";
+dotenv.config();
+const app = new Hono();
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+app.get("/", (c) => {
+  return c.text("hello hono");
+});
+// user data
+app.get("user-details", ...getUserHandler);
+app.get("/user", ...getUserData);
 
-// (async () => {
-//   const response = await notion.databases.retrieve({
-//     database_id: `${process.env.NOTION_DATABASE_ID!}`,
-//   });
-//   console.log(await response);
-// })();
+// education data
+app.get("/education", ...getEducationHandler);
 
-(async () => {
-  const response = await notion.databases.query({
-    database_id: `${process.env.NOTION_DATABASE_ID!}`,
-  });
-  const results = response.results;
-  const filerData = await results
-    // .filter((page) => {
-    //   const nameProperty = page.properties.Name.title;
-    //   const aboutProperty = page.properties.about.rich_text;
-    //   return nameProperty.length > 0 && aboutProperty.lenght > 0;
-    // })
-    .map((page) => {
-      const name = page.properties.Name.title[0].plane_text;
-      const about = page.properties.about.rich_text[0].plain_text;
-      return { name, about };
-    });
-  console.log(results, null, 2);
-  console.log(results[0].properties.Name.title[0].plain_text, null, 2);
-  console.log({ filterData: filerData }, null, 2);
-})();
+// certification data
+app.get("/certification");
+
+// project data
+app.get("/project");
+
+// testimonial data
+app.get("/testimonial");
+
+// contact data
+app.post("/contact", ...postContactHandler);
+
+// page data
+app.get("/page", ...getPageHandler);
+
+export default app;
