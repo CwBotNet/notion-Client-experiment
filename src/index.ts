@@ -1,10 +1,14 @@
 import { Hono } from "hono";
 import {
+  getCertificationHandler,
   getEducationHandler,
   getPageHandler,
+  getProjectHandler,
+  getTestimonialsHandler,
   getUserData,
   getUserHandler,
   postContactHandler,
+  postTestimonialsHandler,
 } from "./handlers";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -21,13 +25,14 @@ app.get("/user", ...getUserData);
 app.get("/education", ...getEducationHandler);
 
 // certification data
-app.get("/certification");
+app.get("/certification", ...getCertificationHandler);
 
 // project data
-app.get("/project");
+app.get("/project", ...getProjectHandler);
 
 // testimonial data
-app.get("/testimonial");
+app.get("/testimonial", ...getTestimonialsHandler);
+app.post("/testimonial", ...postTestimonialsHandler);
 
 // contact data
 app.post("/contact", ...postContactHandler);
